@@ -1,0 +1,281 @@
+% Colors ------------------------------------------------------
+
+\usecolortheme[named=defaultclr]{structure}
+
+
+% Packages ----------------------------------------------------
+
+\usetheme{Frankfurt}
+\usepackage[gen]{eurosym}
+\usepackage{tcolorbox}
+\usepackage{amsmath, amssymb}
+\usepackage{csquotes}
+\MakeOuterQuote{"}
+\usepackage{soul}
+%\usepackage{parskip}
+%\setlength{\parskip}{\smallskipamount} 
+
+% Add setspace package if desired
+\usepackage{setspace}
+\onehalfspacing
+
+\usepackage{tikz}
+\usetikzlibrary{fadings}
+\usetikzlibrary{shadings}
+\usetikzlibrary{patterns}
+\usepackage{transparent}
+\usepackage{xcolor}
+\usepackage{gradient-text}
+\PassOptionsToPackage{silent}{fontspec} 
+\usepackage{lipsum}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{adjustbox}
+\usepackage{tabularx}
+
+\usepackage{svg}
+
+
+
+
+% Links -------------------------------------------------------
+
+\hypersetup{
+    colorlinks,
+    allcolors=.,
+    urlcolor=defaultclr,
+    citecolor=defaultclr
+}
+
+
+% References --------------------------------------------------
+
+\usepackage[%
+backend=biber,%
+style=apa,%
+sorting=nyt,%
+]{biblatex}
+\DeclareFieldFormat{apacase}{#1}
+\setbeamertemplate{bibliography item}{}
+\addbibresource{references.bib}
+
+\renewcommand*{\bibfont}{\normalfont\footnotesize}
+
+\usepackage{xparse}
+
+% Small, grey parencite
+\let\originalparencite\parencite
+\RenewDocumentCommand{\parencite}{O{} O{} m}{%
+  {\footnotesize\textcolor{gray}{\originalparencite[#1][#2]{#3}}}%
+}
+
+
+
+% Fonts -------------------------------------------------------
+
+\usepackage{unicode-math}
+
+\setmainfont[%
+    Path=./style/,%
+    Extension=.ttf,%
+    Scale=1.0,%
+    UprightFont=*-Regular,%
+    BoldFont=*-Bold,%
+    ItalicFont=*-Italic,%
+    BoldItalicFont=*-BoldItalic%
+]{Inter}
+
+\setsansfont[%
+    Path=./style/,%
+    Extension=.ttf,%
+    Scale=1.0,%
+    UprightFont=*-Regular,%
+    BoldFont=*-Bold,%
+    ItalicFont=*-Italic,%
+    BoldItalicFont=*-BoldItalic%
+]{Inter}
+
+\newfontfamily{\titlefont}{RedHatDisplay}[%
+    Path=./style/,%
+    Extension = .ttf,%
+    Scale=1.0,%
+    UprightFont=*-Regular,%
+    BoldFont=*-Bold,%
+    ItalicFont=*-Italic,%
+    BoldItalicFont=*-BoldItalic%
+    ]
+
+\newfontfamily{\interfont}{Inter}[%
+    Path=./style/,%
+    Extension = .ttf,%
+    Scale=1.0,%
+    UprightFont=*-Regular,%
+    BoldFont=*-Bold,%
+    ItalicFont=*-Italic,%
+    BoldItalicFont=*-BoldItalic%
+    ]
+    
+\setmathfont{Fira Math}
+
+\setmathfont[Path=./style/, Scale=0.9, range={up}]{Inter-Regular.ttf}
+\setmathfont[Path=./style/, Scale=0.9, range={it}]{Inter-Italic.ttf}
+\setmathfont[Path=./style/, Scale=0.9, range={bfup}]{Inter-Bold.ttf}
+\setmathfont[Path=./style/, Scale=0.9, range={bfit}]{Inter-BoldItalic.ttf}
+
+% Do NOT load the real bm package!
+\let\bm\symbfit
+
+
+
+% Beamer Templates --------------------------------------------
+
+%\setbeamertemplate{frametitle}[default][center]
+
+\setbeamercolor{frametitle}{parent=subsection in head/foot}
+\setbeamercolor{frametitle right}{parent=section in head/foot}
+\setbeamercolor{footnote}{fg=gray} % I am setting all footnotes to appear in gray
+
+\makeatletter
+\pgfdeclarehorizontalshading[frametitle.bg,frametitle right.bg]{beamer@frametitleshade}{\paperheight}{%
+    color(0pt)=(frametitle.bg);
+    color(\paperwidth)=(frametitle right.bg)}
+
+
+\setbeamertemplate{frametitle}
+{%
+    \nointerlineskip%
+    \vskip-2pt%
+    \hbox{\leavevmode
+        \advance\beamer@leftmargin by -12bp%
+        \advance\beamer@rightmargin by -12bp%
+        \beamer@tempdim=\textwidth%
+        \advance\beamer@tempdim by \beamer@leftmargin%
+        \advance\beamer@tempdim by \beamer@rightmargin%
+        \hskip-\Gm@lmargin%
+        \hbox{%
+            \setbox\beamer@tempbox=\hbox{%
+                \begin{minipage}[b]{\paperwidth}%
+                    \vbox{}\vskip-.75ex%
+                    \centering
+                    \insertframetitle%
+                    \ifx\insertframesubtitle\@empty%
+                    \strut\par%
+                    \else
+                    \par{\usebeamerfont*{framesubtitle}{\usebeamercolor[fg]{framesubtitle}\insertframesubtitle}\strut\par}%
+                    \fi%
+                    \vskip4pt%
+                    \nointerlineskip
+                    \vbox{}%
+                \end{minipage}%
+            }%
+            \beamer@tempdim=\ht\beamer@tempbox%
+            \advance\beamer@tempdim by 6pt%
+            \begin{pgfpicture}{0pt}{0pt}{\paperwidth}{\beamer@tempdim}%
+                \usebeamercolor{frametitle right}%
+                \pgfpathrectangle{\pgfpointorigin}{\pgfpoint{\paperwidth}{\beamer@tempdim}}%
+                \pgfusepath{clip}%
+                \pgftext[left,base]{\pgfuseshading{beamer@frametitleshade}}%
+            \end{pgfpicture}%
+            \hskip-\paperwidth%
+            \box\beamer@tempbox%
+        }%
+        \hskip-\Gm@rmargin%
+    }%
+    \nointerlineskip%
+    \vskip-0.2pt%
+    \vskip-2pt%
+}
+
+
+\makeatother
+
+\setbeamercolor{section in toc}{fg=red}
+%%%
+
+\colorlet{titleleft}{defaultclr}
+\colorlet{titleright}{defaultclr}
+
+\setbeamercolor*{frametitle}{fg=white}
+
+\makeatletter
+\pgfdeclarehorizontalshading[titleleft,titleright]{beamer@frametitleshade}{\paperheight}{%
+    color(-0.25\paperwidth)=(titleleft);
+    color(1.25\paperwidth)=(titleright)}
+\makeatother
+
+\setbeamerfont{frametitle}{series=\bfseries, family = \titlefont}
+\setbeamerfont{title}{size = \Huge, series=\bfseries, family = \titlefont}
+\setbeamerfont{headline}{size=\scriptsize, family = \titlefont}
+\setbeamercolor{title}{fg=defaultclr!50!black}
+
+\setbeamersize{text margin left=5.3mm,text margin right=5.3mm} 
+
+\beamertemplatenavigationsymbolsempty
+\setbeamertemplate{headline}{}
+
+\setbeamercolor{titlelike}{parent=structure}
+
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+\setbeamertemplate{itemize/enumerate subbody begin}{\small}
+
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}[circle]
+\setbeamertemplate{itemize subsubitem}[circle]
+
+\setbeamertemplate{enumerate items}[default]
+
+% Section Headers --------------------------------------------
+
+\setbeamertemplate{section in toc}{\inserttocsection}
+\setbeamerfont{section in toc}{size=\huge,series=\bfseries,family=\titlefont}
+
+\AtBeginSection[]
+{{\setbeamercolor{section in toc}{bg=white, fg=white}
+\setbeamercolor{section in toc shaded}{bg=gray, fg=gray}
+\setbeamerfont{section in toc shaded}{size=\small}
+%\setbeamercolor{background canvas}{bg=structure}
+\setbeamertemplate{background canvas}{%
+\begin{tikzpicture}[remember picture,overlay]
+\shade[inner color=defaultclr, outer color=defaultclr]
+    ([shift={(-5cm,5cm)}]current page.center) circle [radius=1.25\paperwidth];
+\end{tikzpicture}%     
+}
+
+  \begin{frame}\centering
+    \bfseries\color{white}\tableofcontents[currentsection]
+  \end{frame}}}
+
+
+% Miscellaneous ----------------------------------------------
+
+\newcommand{\ind}{\perp\!\!\!\!\perp} 
+
+\newcommand{\mathcolorbox}[2][yellow]{\mathchoice%
+  {\colorbox{#1}{$\displaystyle#2$}}%
+  {\colorbox{#1}{$\textstyle#2$}}%
+  {\colorbox{#1}{$\scriptstyle#2$}}%
+  {\colorbox{#1}{$\scriptscriptstyle#2$}}}%
+
+\renewcommand{\arraystretch}{0.68}
+
+% Redefine how the continuation of frametitles is displayed
+\makeatletter
+\defbeamertemplate{frametitle continuation}{custom}[1][]
+{(\insertcontinuationcount)}
+\makeatother
+\setbeamertemplate{frametitle continuation}[custom]
+
+% Tight Font
+\newcommand{\tightfont}{%
+  \setlength{\spaceskip}{
+    0.3\fontdimen2\font
+    plus 0.3\fontdimen2\font
+    minus 0.3\fontdimen3\font
+  }%
+}
